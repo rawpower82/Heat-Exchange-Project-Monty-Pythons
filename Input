@@ -1,6 +1,10 @@
 # Input Liquid Types - Returns string tuplet: (liquid_type_hot, liquid_type_cold)
 
 def inputLiquid():
+    water = '1'
+    tetraflo = '2'
+    ethanol = '3'
+    trimethyl = '4'
     print ("The liquid types are:")
     print ("\t1) water")
     print ("\t2) 1,1,1,2-tetrafluoroethane")
@@ -8,9 +12,9 @@ def inputLiquid():
     print ("\t4) 2,2,4-trimethylpentane")
     print ()
     liquid_type_hot = input("What type of liquid is the hot stream? (Enter the number): ")
-    while liquid_type_hot != "1" and liquid_type_hot != "2" and liquid_type_hot != "3" and liquid_type_hot != "4":
+    while liquid_type_hot != water and liquid_type_hot != tetraflo and liquid_type_hot != ethanol and liquid_type_hot != trimethyl:
         liquid_type_hot = input("Invalid entry. Please select an integer 1-4: ")
     liquid_type_cold = input("What type of liquid is the cold stream? (Enter the number): ")
-    while liquid_type_cold != "1" and liquid_type_cold != "2" and liquid_type_cold != "3" and liquid_type_cold != "4":
+    while liquid_type_cold != water and liquid_type_cold != tetraflo and liquid_type_cold != ethanol and liquid_type_cold != trimethyl:
         liquid_type_cold = input("Invalid entry. Please select an integer 1-4: ")
     return ([liquid_type_hot, liquid_type_cold])
