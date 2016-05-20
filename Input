@@ -1,23 +1,77 @@
 # Input Liquid Types - Returns string tuplet: (liquid_type_hot, liquid_type_cold)
 
-def inputLiquid():
-    water = '1'
-    tetraflo = '2'
-    ethanol = '3'
-    trimethyl = '4'
-    print ("The liquid types are:")
-    print ("\t1) water")
-    print ("\t2) 1,1,1,2-tetrafluoroethane")
-    print ("\t3) ethanol")
-    print ("\t4) 2,2,4-trimethylpentane")
-    print ()
-    liquid_type_hot = input("What type of liquid is the hot stream? (Enter the number): ")
-    while liquid_type_hot != water and liquid_type_hot != tetraflo and liquid_type_hot != ethanol and liquid_type_hot != trimethyl:
-        liquid_type_hot = input("Invalid entry. Please select an integer 1-4: ")
-    liquid_type_cold = input("What type of liquid is the cold stream? (Enter the number): ")
-    while liquid_type_cold != water and liquid_type_cold != tetraflo and liquid_type_cold != ethanol and liquid_type_cold != trimethyl:
-        liquid_type_cold = input("Invalid entry. Please select an integer 1-4: ")
-    return ([liquid_type_hot, liquid_type_cold])
+# Melting and Boiling Points - LOOK UP VALUES FOR TRIMETHYL
+melt_water = 273.15 # K
+boil_water = 373.15 # K
+melt_tetraflo = 172.00 # K
+boil_tetraflo = 247.08 # K
+melt_ethanol = 159.05 # K
+boil_ethanol = 351.44 # K
+melt_trimethyl = 1 # K  LOOK UP ON WEBSITE
+boil_trimethyl = 1 # K  LOOK UP ON WEBSITE
+
+# Molecular Weights
+weight_water = 18.01528 # g/mol 
+weight_tetraflo = 102.03089 # g/mol 
+weight_ethanol = 46.06844 # g/mol 
+weight_trimethyl = 114.22852 # g/mol 
+
+# Input Liquid Types 
+water = '1'
+tetraflo = '2'
+ethanol = '3'
+trimethyl = '4'
+print ("The liquid types are:")
+print ("\t1) water")
+print ("\t2) 1,1,1,2-tetrafluoroethane")
+print ("\t3) ethanol")
+print ("\t4) 2,2,4-trimethylpentane")
+print ()
+liquid_type_hot = input("What type of liquid is the hot stream? (Enter the number): ")
+while liquid_type_hot != water and liquid_type_hot != tetraflo and liquid_type_hot != ethanol and liquid_type_hot != trimethyl:
+    liquid_type_hot = input("Invalid entry. Please select an integer 1-4: ")
+liquid_type_cold = input("What type of liquid is the cold stream? (Enter the number): ")
+while liquid_type_cold != water and liquid_type_cold != tetraflo and liquid_type_cold != ethanol and liquid_type_cold != trimethyl:
+    liquid_type_cold = input("Invalid entry. Please select an integer 1-4: ")
+
+# Assign Constants to Hot Stream
+if liquid_type_hot == water:
+    hot_melt = melt_water
+    hot_boil = boil_water
+    hot_weight = weight_water
+elif liquid_type_hot == tetraflo:
+    hot_melt = melt_tetraflo
+    hot_boil = boil_tetraflo
+    hot_weight = weight_tetraflo
+elif liquid_type_hot == ethanol:
+    hot_melt = melt_ethanol
+    hot_boil = boil_ethanol
+    hot_weight = weight_ethanol
+elif liquid_type_hot == trimethyl:
+    hot_melt = melt_trimethyl
+    hot_boil = boil_trimethyl
+    hot_weight = weight_trimethyl
+
+# Assign Constants to Cold Stream
+if liquid_type_cold == water:
+    cold_melt = melt_water
+    cold_boil = boil_water
+    cold_weight = weight_water
+elif liquid_type_cold == tetraflo:
+    cold_melt = melt_tetraflo
+    cold_boil = boil_tetraflo
+    cold_weight = weight_tetraflo
+elif liquid_type_cold == ethanol:
+    cold_melt = melt_ethanol
+    cold_boil = boil_ethanol
+    cold_weight = weight_ethanol
+elif liquid_type_cold == trimethyl:
+    cold_melt = melt_trimethyl
+    cold_boil = boil_trimethyl
+    cold_weight = weight_trimethyl
+    
+
+
 
 
 
@@ -35,8 +89,11 @@ if U < 0:
     
     
     
+    
+    
+    
 # Input Temperatures
-        # Notify the User if the inlet our outlet temperatures are a solid or a gas (invalid).
+
 
 # Temperature of Cold Stream Input
     # Identify Units
@@ -46,18 +103,23 @@ while k_o_r != 'K' and k_o_r != 'oR':
 # Input Temperature
 T_ci = input("What is the input temperature of the cold stream?: ")
 valid = False
-while valid == False:       # Loop which makes sure that a number is entered. 
+while valid == False:       # Loop which validates input 
     try:
-        T_ci = float(T_ci)
+        T_ci = float(T_ci)    # Makes sure that a number is entered rather than a string.
         valid = True
     except:
         T_ci = input("Error. Please enter a number:")
+    # Convert AES to SI
+    if k_o_r == 'oR':
+        T_ci = T_ci * 5.0/9.0
+    if T_ci <= cold_melt:        # Makes sure that the temperature does not result in a solid
+        T_ci = input("Error. This substance is a solid when it is at or below " + str(cold_melt) + "K. Enter a valid temperature: ")
+        valid = False
+    elif T_ci >= cold_boil:      # Makes sure that the temperature does not result in a gas
+        T_ci = input("Error. This substance is a gas when it is at or above " + str(cold_boil) + "K. Enter a valid temperature: ")
+        valid = False
 
-
-# Convert AES to SI
-if k_o_r == 'oR':
-    T_ci = T_ci * 5.0/9.0
-    
+        
 # Temperature of Hot Stream Input
 # Identify Units
 k_o_r = input("Would you like to input the temperature of the hot input stream in Kelvin or Rankine? Enter 'K' for Kelvin or 'oR' for Rankine: ")
@@ -72,11 +134,17 @@ while valid == False:     # Loop which makes sure that a number is entered.
         valid = True
     except:
         T_hi = input("Error. Please enter a number:")
-
-# Convert AES to SI
-if k_o_r == 'oR':
-    T_hi = T_hi * 5.0/9.0
-
+    # Convert AES to SI
+    if k_o_r == 'oR':
+        T_hi = T_hi * 5.0/9.0
+    if T_hi <= hot_melt:        # Makes sure that the temperature does not result in a solid
+        T_hi = input("Error. This substance is a solid when it is at or below " + str(hot_melt) + "K. Enter a valid temperature: ")
+        valid = False
+    elif T_hi >= hot_boil:      # Makes sure that the temperature does not result in a gas
+        T_hi = input("Error. This substance is a gas when it is at or above " + str(hot_boil) + "K. Enter a valid temperature: ")
+        valid = False
+        
+        
 # Temperature of One Output
 ho_co = input("Would you like to enter the output temperature of the hot or cold stream? Enter 'hot' or 'cold': ")
 while ho_co != 'hot' and ho_co != 'cold':
@@ -95,9 +163,15 @@ if ho_co == 'hot':
             valid = True
         except:
             T_ho = input("Error. Please enter a number:")
-    # Convert AES to SI
-    if k_o_r == 'oR':
-        T_ho = T_ho * 5.0/9.0
+        # Convert AES to SI
+        if k_o_r == 'oR':
+            T_ho = T_ho * 5.0/9.0
+        if T_ho <= hot_melt:        # Makes sure that the temperature does not result in a solid
+            T_ho = input("Error. This substance is a solid when it is at or below " + str(hot_melt) + "K. Enter a valid temperature: ")
+            valid = False
+        elif T_ho >= hot_boil:      # Makes sure that the temperature does not result in a gas
+            T_ho = input("Error. This substance is a gas when it is at or above " + str(hot_boil) + "K. Enter a valid temperature: ")
+            valid = False
 elif ho_co == 'cold':
     # Identify Units
     k_o_r = input("Would you like to input the temperature of the could output stream in Kelvin or Rankine? Enter 'K' for Kelvin or 'oR' for Rankine: ")
@@ -112,13 +186,28 @@ elif ho_co == 'cold':
             valid = True
         except:
             T_co = input("Error. Please enter a number:")
-    # Convert AES to SI
-    if k_o_r == 'oR':
-        T_co = T_co * 5.0/9.0
-        
-        
-        
+        # Convert AES to SI
+        if k_o_r == 'oR':
+            T_co = T_co * 5.0/9.0
+        if T_co <= cold_melt:        # Makes sure that the temperature does not result in a solid
+            T_co = input("Error. This substance is a solid when it is at or below " + str(cold_melt) + "K. Enter a valid temperature: ")
+            valid = False
+        elif T_co >= cold_boil:      # Makes sure that the temperature does not result in a gas
+            T_co = input("Error. This substance is a gas when it is at or above " + str(cold_boil) + "K. Enter a valid temperature: ")
+            valid = False
+
+
+
+
+
+
+
 # Input Flow Rates
+
+
+
+
+
 
 
 """
