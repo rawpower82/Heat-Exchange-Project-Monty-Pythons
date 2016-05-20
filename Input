@@ -87,6 +87,57 @@ if U < 0:
     sys.exit()
     
     
+
+
+# Input Flow Rates
+
+# SI: kg/s 
+# AES: lb/s ???
+# 1 lb/s = 0.453592 kg/s 
+
+# Flow Rate of the Cold Stream
+# Identify Units
+kg_o_lb = input("Would you like to input the flow rate of the cold stream in kg/s or lb/s ? Enter 'kg' for kg/s or 'lb' for lb/s: ")
+while kg_o_lb != 'kg' and kg_o_lb != 'lb':
+    k_o_r = input("Invalid entry. Please enter 'kg' for kg/s or 'lb' for lb/s: ")
+# Input Flow Rate
+flow_cold = input("What is the flow rate of the cold stream?: ")
+valid = False
+while valid == False:       # Loop which validates input 
+    try:
+        flow_cold = float(flow_cold)    # Makes sure that a number is entered rather than a string.
+        valid = True
+    except:
+        flow_cold = input("Error. Please enter a number:")
+# Convert AES to SI
+if kg_o_lb == 'lb':
+    flow_cold = flow_cold * 0.453592
+if flow_cold < 0:        # Makes sure that the flow rate is not negative
+    print ("Error: Cannot have a negative flow rate. Goodbye.")
+    sys.exit()
+
+    
+# Flow Rate of the Hot Stream
+# Identify Units
+kg_o_lb = input("Would you like to input the flow rate of the hot stream in kg/s or lb/s ? Enter 'kg' for kg/s or 'lb' for lb/s: ")
+while kg_o_lb != 'kg' and kg_o_lb != 'lb':
+    k_o_r = input("Invalid entry. Please enter 'kg' for kg/s or 'lb' for lb/s: ")
+# Input Flow Rate
+flow_hot = input("What is the flow rate of the hot stream?: ")
+valid = False
+while valid == False:       # Loop which validates input 
+    try:
+        flow_hot = float(flow_hot)    # Makes sure that a number is entered rather than a string.
+        valid = True
+    except:
+        flow_hot = input("Error. Please enter a number:")
+# Convert AES to SI
+if kg_o_lb == 'lb':
+    flow_hot = flow_hot * 0.453592      # lb/s * (kg/s)/(lb/s) = kg/s
+if flow_hot < 0:        # Makes sure that the flow rate is not negative
+    print ("Error: Cannot have a negative flow rate. Goodbye.")
+    sys.exit()
+    
     
     
     
@@ -197,12 +248,6 @@ elif ho_co == 'cold':
             valid = False
 
 
-
-
-
-
-
-# Input Flow Rates
 
 
 
