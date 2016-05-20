@@ -1,5 +1,12 @@
+# Define change in temperature for hot and cold streams
+
+
+
 # Define Specific Heat Capacities (Use average of inlet and outlet temperatures for T)
-capacity_water = "276370 - 2090.1(T) + 8.125(T**2) - 0.014116(T**3) + 0.0000093701(T**4)"
-capacity_tetra = "651080 - 9505.7(T) + 62.835(T**2) - 0.18264(T**3) + 0.00020031"
-capacity_ethanol = ""
+capacity_water = "276370 - 2090.1 * (T) + 8.125 * (T**2) - 0.014116 * (T**3) + 0.0000093701 * (T**4)"
+capacity_tetra = "651080 - 9505.7 * (T) + 62.835 * (T**2) - 0.18264 * (T**3) + 0.00020031 * (T**4)"
+capacity_ethanol = "A + B * T + C * T**2 + D * T**3 + E * T**4"
 capacity_trimeth = 
+
+
+# Define Temperature Log Mean 1 & 2
