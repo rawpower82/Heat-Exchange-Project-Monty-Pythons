@@ -1,3 +1,5 @@
+
+Zach's:
 # Define change in temperature for hot and cold streams
 
 
@@ -10,3 +12,17 @@ capacity_trimeth = "A + B * T + C * T**2 + D * T**3 + E * T**4"  # LOOK UP VALUE
 
 
 # Define Temperature Log Mean 1 & 2
+
+
+# Calculate cost based on area
+
+
+
+Kraig's:
+# Calculate 4th temperature using first two equations
+
+
+# Define the function for F (also define R and P)
+
+
+# Output
