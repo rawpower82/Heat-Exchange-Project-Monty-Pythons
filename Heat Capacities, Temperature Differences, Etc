@@ -2,7 +2,7 @@
 Zach's:
 # Define change in temperature for hot and cold streams
 dth=tho-thi
-dth=tco-tci
+dtc=tco-tci
 
 
 # Define Specific Heat Capacities (Use average of inlet and outlet temperature
