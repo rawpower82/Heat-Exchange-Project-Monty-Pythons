@@ -5,7 +5,7 @@ dth=tho-thi
 dtc=tco-tci
 
 
-# Define Specific Heat Capacities (Use average of inlet and outlet temperature
+# Define Specific Heat Capacities (Use average of inlet and outlet temperature)
 capacity_water = "276370 - 2090.1 * (T) + 8.125 * (T**2) - 0.014116 * (T**3) + 0.0000093701 * (T**4)"
 capacity_tetra = "651080 - 9505.7 * (T) + 62.835 * (T**2) - 0.18264 * (T**3) + 0.00020031 * (T**4)"
 capacity_ethanol = "102640 - 139.63 * T - .030341 * T**2 + .0020386 * T**3 + 0.0 * T**4"
@@ -29,3 +29,29 @@ Kraig's:
 
 
 # Output
+
+
+
+
+
+
+Variables in Input Code For Reference (please use these in your code!):
+    liquid_type_hot
+    liquid_type_cold
+      water = '1'
+      tetraflo = '2'
+      ethanol = '3'
+      trimethyl = '4'
+    cold_melt 
+    cold_boil 
+    cold_weight
+    hot_melt 
+    hot_boil 
+    hot_weight 
+    U
+    flow_cold  -  flow rate in kg/s
+    flow_hot
+    T_ci    - Temperature in K
+    T_hi
+    T_ho
+    T_hi
