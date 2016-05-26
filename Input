@@ -7,8 +7,8 @@ melt_tetraflo = 172.00 # K
 boil_tetraflo = 247.08 # K
 melt_ethanol = 159.05 # K
 boil_ethanol = 351.44 # K
-melt_trimethyl = 165.786 # K #I updated the meling
-boil_trimethyl = 372.354 # K #and boiling points
+melt_trimethyl = 165.786 # K
+boil_trimethyl = 372.354 # K
 
 # Molecular Weights
 weight_water = 18.01528 # g/mol 
