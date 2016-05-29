@@ -99,7 +99,7 @@ if U < 0:
 # Identify Units
 kg_o_lb = input("Would you like to input the flow rate of the cold stream in kg/s or lb/s ? Enter 'kg' for kg/s or 'lb' for lb/s: ")
 while kg_o_lb != 'kg' and kg_o_lb != 'lb':
-    k_o_r = input("Invalid entry. Please enter 'kg' for kg/s or 'lb' for lb/s: ")
+    kg_o_lb = input("Invalid entry. Please enter 'kg' for kg/s or 'lb' for lb/s: ")
 # Input Flow Rate
 flow_cold = input("What is the flow rate of the cold stream?: ")
 valid = False
