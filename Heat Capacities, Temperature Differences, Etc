@@ -5,9 +5,7 @@ dtc=T_co-T_ci
 
 '''
 # Here is a way to make the heat capacities compatible to the input. It also defines the capacity for each stream.
-# Define change in temperature for hot and cold streams
-dth=T_ho-T_hi
-dtc=T_co-T_ci
+
     
 # Define Specific Heat Capacities (Use average of inlet and outlet temperature)
 def define_capacity(dt, liquid_type):  # Parameters: Either dth or dtc (depending on which stream), liquid type
