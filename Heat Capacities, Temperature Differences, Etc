@@ -3,9 +3,34 @@ Zach's:
 dth=T_ho-T_hi
 dtc=T_co-T_ci
 
-# [NEW] T needs to be defined. T = dt/2 . The dt depends on whether the liquid is in the hot or cold stream.
-# Please define the capacity of each stream based on what the user inputs.
-    # something like capacity_hot = capacity of the liquid_type_hot
+'''
+# Here is a way to make the heat capacities compatible to the input. It also defines the capacity for each stream.
+# Define change in temperature for hot and cold streams
+dth=T_ho-T_hi
+dtc=T_co-T_ci
+    
+# Define Specific Heat Capacities (Use average of inlet and outlet temperature)
+def define_capacity(dt, liquid_type):  # Parameters: Either dth or dtc (depending on which stream), liquid type
+    T = dt/2
+    # Define Specific Heat Capacities
+    capacity_water = 276370 - 2090.1 * T + 8.125 * (T**2) - 0.014116 * (T**3) + 0.0000093701 * (T**4)
+    capacity_tetraflo = 651080 - 9505.7 * T + 62.835 * (T**2) - 0.18264 * (T**3) + 0.00020031 * (T**4)
+    capacity_ethanol = 102640 - 139.63 * T - .030341 * (T**2) + .0020386 * (T**3) + 0.0 * (T**4)
+    capacity_trimethyl = 95300 - 696.70 * T - 1.3765 * (T**2) + .0021734 * (T**3) + 0.0 * (T**4)
+    if liquid_type == water:
+        return capacity_water
+    elif liquid_type == tetraflo:
+        return capacity_tetra
+    elif liquid_type == ethanol:
+        return capacity_ethanol
+    elif liquid_type == trimethyl:
+        return capacity_trimethyl
+    
+
+capacity_hot = define_capacity(dth, liquid_type_hot)
+capacity_cold = define_capacity(dth, liquid_type_cold)
+'''
+
 
 # Define Specific Heat Capacities (Use average of inlet and outlet temperature)
 capacity_water = "276370 - 2090.1 * (T) + 8.125 * (T**2) - 0.014116 * (T**3) + 0.0000093701 * (T**4)"
@@ -37,8 +62,9 @@ Kraig's:
 
 
 
-
-Variables in Input Code For Reference (please use these in your code!):
+'''
+PLEASE USE THESE IN YOUR CODE TO SIMPLIFY PUTTING ALL OF THE CODE TOGETHER
+Variables in Input Code For Reference:
     liquid_type_hot
     liquid_type_cold
       water = '1'
@@ -58,3 +84,6 @@ Variables in Input Code For Reference (please use these in your code!):
     T_hi
     T_ho
     T_hi
+    capacity_cold
+    capacity_hot
+'''
