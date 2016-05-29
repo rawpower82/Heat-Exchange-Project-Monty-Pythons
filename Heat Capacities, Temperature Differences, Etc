@@ -3,6 +3,7 @@ Zach's:
 dth=t_ho-t_hi
 dtc=t_co-t_ci
 
+# [NEW] T needs to be defined. T = dt/2 . The dt depends on whether the liquid is in the hot or cold stream.
 
 # Define Specific Heat Capacities (Use average of inlet and outlet temperature)
 capacity_water = "276370 - 2090.1 * (T) + 8.125 * (T**2) - 0.014116 * (T**3) + 0.0000093701 * (T**4)"
