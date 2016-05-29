@@ -223,6 +223,8 @@ if ho_co == 'hot':
         elif T_ho >= hot_boil:      # Makes sure that the temperature does not result in a gas
             T_ho = input("Error. This substance is a gas when it is at or above " + str(hot_boil) + "K (or " + str("{0:.2f}".format(hot_boil * 9.0/5.0)) + "R). Enter a valid temperature: ")
             valid = False
+    # Calculate 4th temperature using first two equations
+    
 elif ho_co == 'cold':
     # Identify Units
     k_o_r = input("Would you like to input the temperature of the could output stream in Kelvin or Rankine? Enter 'K' for Kelvin or 'oR' for Rankine: ")
@@ -246,6 +248,8 @@ elif ho_co == 'cold':
         elif T_co >= cold_boil:      # Makes sure that the temperature does not result in a gas
             T_co = input("Error. This substance is a gas when it is at or above " + str(cold_boil) + "K (or " + str("{0:.2f}".format(cold_boil * 9.0/5.0)) + "R). Enter a valid temperature: ")
             valid = False
+    # Calculate 4th temperature using first two equations
+
 
 
 
