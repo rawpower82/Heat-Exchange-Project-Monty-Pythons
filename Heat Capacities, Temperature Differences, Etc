@@ -1,9 +1,11 @@
 Zach's:
 # Define change in temperature for hot and cold streams
-dth=t_ho-t_hi
-dtc=t_co-t_ci
+dth=T_ho-T_hi
+dtc=T_co-T_ci
 
 # [NEW] T needs to be defined. T = dt/2 . The dt depends on whether the liquid is in the hot or cold stream.
+# Please define the capacity of each stream based on what the user inputs.
+    # something like capacity_hot = capacity of the liquid_type_hot
 
 # Define Specific Heat Capacities (Use average of inlet and outlet temperature)
 capacity_water = "276370 - 2090.1 * (T) + 8.125 * (T**2) - 0.014116 * (T**3) + 0.0000093701 * (T**4)"
@@ -13,9 +15,10 @@ capacity_trimeth = "95300 - 696.70 * T - 1.3765 * T**2 + .0021734 * T**3 + 0.0 *
 
 
 # Define Temperature Log Mean and delta T 1 & 2
+dt1=T_hi-T_co
+dt2=T_ho-T_ci
 dtlm=(dt2-dt1)/ln(dt2/dt1)
-dt1=t_hi-t_co
-dt2=t_ho-t_ci
+
 
 # Calculate cost based on area
 cost=1000*A #m^2
