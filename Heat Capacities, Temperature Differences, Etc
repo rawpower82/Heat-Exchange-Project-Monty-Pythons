@@ -3,7 +3,7 @@ Zach's:
 dth=T_ho-T_hi
 dtc=T_co-T_ci
 
-'''
+"""
 # Here is a way to make the heat capacities compatible to the input. It also defines the capacity for each stream.
 
     
@@ -27,7 +27,7 @@ def define_capacity(dt, liquid_type):  # Parameters: Either dth or dtc (dependin
 
 capacity_hot = define_capacity(dth, liquid_type_hot)
 capacity_cold = define_capacity(dth, liquid_type_cold)
-'''
+"""
 
 
 # Define Specific Heat Capacities (Use average of inlet and outlet temperature)
@@ -49,9 +49,11 @@ cost = 1000 * A # USD
 
 Kraig's:
 # Calculate 4th temperature using first two equations
-# (Use an if statement with the ho_co variable which determines which T was given).
-# We can just add this code into the input file where the output temperatures are defined
-
+"""
+Make sure to use an if statement with the ho_co variable which determines which T was given).
+We can just add this code into the input file where the output temperatures are defined. Just look for the
+spot in the input code where I pasted: # Calculate 4th temperature using first two equations
+"""
 
 # Define the function for F (also define R and P)
 
