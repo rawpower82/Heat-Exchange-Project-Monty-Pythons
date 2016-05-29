@@ -1,7 +1,7 @@
 Zach's:
 # Define change in temperature for hot and cold streams
-dth=tho-thi
-dtc=tco-tci
+dth=t_ho-t_hi
+dtc=t_co-t_ci
 
 
 # Define Specific Heat Capacities (Use average of inlet and outlet temperature)
@@ -13,8 +13,8 @@ capacity_trimeth = "95300 - 696.70 * T - 1.3765 * T**2 + .0021734 * T**3 + 0.0 *
 
 # Define Temperature Log Mean and delta T 1 & 2
 dtlm=(dt2-dt1)/ln(dt2/dt1)
-dt1=thi-tco
-dt2=tho-tci
+dt1=t_hi-t_co
+dt2=t_ho-t_ci
 
 # Calculate cost based on area
 cost=1000*A #m^2
