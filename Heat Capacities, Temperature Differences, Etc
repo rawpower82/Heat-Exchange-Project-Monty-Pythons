@@ -15,13 +15,13 @@ capacity_trimeth = "95300 - 696.70 * T - 1.3765 * T**2 + .0021734 * T**3 + 0.0 *
 
 
 # Define Temperature Log Mean and delta T 1 & 2
-dt1=T_hi-T_co
-dt2=T_ho-T_ci
-dtlm=(dt2-dt1)/ln(dt2/dt1)
+dt1= abs(T_hi-T_co)
+dt2= abs(T_ho-T_ci)
+dtlm=(dt2-dt1)/np.log(dt2/dt1)
 
 
 # Calculate cost based on area
-cost=1000*A #m^2
+cost = 1000 * A # USD
 
 
 Kraig's:
