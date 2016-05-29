@@ -52,7 +52,8 @@ Kraig's:
 """
 Make sure to use an if statement with the ho_co variable which determines which T was given).
 We can just add this code into the input file where the output temperatures are defined. Just look for the
-spot in the input code where I pasted: # Calculate 4th temperature using first two equations
+spot in the input code where I pasted: # Calculate 4th temperature using first two equations.
+I would also output the temperature in the same if loop.
 """
 
 # Define the function for F (also define R and P)
