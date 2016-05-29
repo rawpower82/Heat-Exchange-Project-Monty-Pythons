@@ -60,6 +60,8 @@ I would also output the temperature in the same if loop.
 
 
 # Solve for Area
+# NOTE: For the units to balance out you need to divide q by the molecular weight like so: 
+# q = flow_cold * capacity_cold * (T_co-T_ci) / cold_weight  (see the solution posted by Dr. Hedengren)
 
 
 # Output
