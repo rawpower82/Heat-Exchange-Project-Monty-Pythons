@@ -50,6 +50,7 @@ cost = 1000 * A # USD
 Kraig's:
 # Calculate 4th temperature using first two equations
 # (Use an if statement with the ho_co variable which determines which T was given).
+# We can just add this code into the input file where the output temperatures are defined
 
 
 # Define the function for F (also define R and P)
