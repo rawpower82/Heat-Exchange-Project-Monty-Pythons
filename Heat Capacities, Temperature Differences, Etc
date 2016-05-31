@@ -31,7 +31,7 @@ def define_capacity(average, liquid_type):  # Parameters: Either average_hot or 
 capacity_hot = define_capacity(dth, liquid_type_hot)
 capacity_cold = define_capacity(dth, liquid_type_cold)
 """
-
+#Hey, I think that there may be an inconsistency in the average temperature definition in some of these equations...not sure though...might be worth double checking.
 
 # Define Specific Heat Capacities (Use average of inlet and outlet temperature)
 capacity_water = "276370 - 2090.1 * (T) + 8.125 * (T**2) - 0.014116 * (T**3) + 0.0000093701 * (T**4)"
@@ -50,14 +50,42 @@ dtlm=(dt2-dt1)/np.log(dt2/dt1)
 cost = 1000 * A # USD
 
 
-Kraig's:
+#Kraig's:
 # Calculate 4th temperature using first two equations
 
 out=input("input temperature of one output:")
 which_out=input("input which temperature output was specified, H or C:")
-if which_out=H:
-    
-
+units=input("what units is the temperature in, R or K?")
+if units==K:
+    T_hi=T_hi
+    T_ci=T_ci
+    T_co=T_co
+    T_ho=T_ho
+elif units==R:
+    T_hi=T_hi*5/9
+    T_ci=T_ci*5/9
+    T_co=T_co*5/9
+    T_ho=T_ho*5/9
+else:
+    print("invalid units, enter R or K as temperature units")
+if which_out==H:
+    def f1(z):
+        T_co=z[0]
+        capacity_cold=z[1]
+        q=np.zeros
+        q[0]=flow_hot*capacity_hot*(T_hi-T_ho)
+        q[1]=flow_cold*capacity_cold*(T_ci-T_co)    
+        return q[1]-q[0]
+    z=fsolve(f1,[300,75])
+elif which_out==C:
+    def f1(z):
+        T_ho=z[0]
+        capacity_hot=z[1]
+        q=np.zeros
+        q[0]=flow_hot*capacity_hot*(T_hi-T_ho)
+        q[1]=flow_cold*capacity_cold*(T_ci-T_co)    
+        return q[1]-q[0]
+    z=fsolve(f1,[300,75])
 """
 Make sure to use an if statement with the ho_co variable which determines which T was given).
 We can just add this code into the input file where the output temperatures are defined. Just look for the
