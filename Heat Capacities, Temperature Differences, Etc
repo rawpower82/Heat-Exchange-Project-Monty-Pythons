@@ -4,6 +4,9 @@ average_hot = (T_ho+T_hi)/2
 average_cold = (T_co+T_ci)/2
 
 """
+# I noticed a problem with this idea. The 4th temperature can only be calculated when you know the heat capacity, 
+# but the heat capacity here requires both the output and input temperature of the stream. We need to come up with
+# another way to solve for the fourth temperature.
 # Here is a way to make the heat capacities compatible to the input. It also defines the capacity for each stream.
 
 
