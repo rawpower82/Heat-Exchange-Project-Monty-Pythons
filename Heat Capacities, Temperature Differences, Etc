@@ -52,6 +52,12 @@ cost = 1000 * A # USD
 
 Kraig's:
 # Calculate 4th temperature using first two equations
+
+out=input("input temperature of one output:")
+which_out=input("input which temperature output was specified, H or C:")
+if which_out=H:
+    
+
 """
 Make sure to use an if statement with the ho_co variable which determines which T was given).
 We can just add this code into the input file where the output temperatures are defined. Just look for the
@@ -60,9 +66,12 @@ I would also output the temperature in the same if loop.
 """
 
 # Define the function for F (also define R and P)
-
+R=(T_hi-T_ho)/(T_co-Tci)
+R=(T_co-T_ci)/(T_hi-T_ci)
+F=((R**2+1)/(R-1))*sp.log((1-P)/(1-P*R))/sp.log((2-P(R+1-(R**2+1)**.5))/(2-P*(R+1+(R**2+1)**.5)))
 
 # Solve for Area
+q/(F*U*dtlm)
 # NOTE: For the units to balance out you need to divide q by the molecular weight like so: 
 # q = flow_cold * capacity_cold * (T_co-T_ci) / cold_weight  (see the solution posted by Dr. Hedengren)
 
