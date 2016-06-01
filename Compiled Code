@@ -257,11 +257,13 @@ elif ho_co == 'cold':
         elif T_co >= cold_boil:      # Makes sure that the temperature does not result in a gas
             T_co = input("Error. This substance is a gas when it is at or above " + str(cold_boil) + "K (or " + str("{0:.2f}".format(cold_boil * 9.0/5.0)) + "R). Enter a valid temperature: ")
             valid = False
-# Define average temperatures for hot and cold streams
+# Define 4th temperature and average temperatures for hot and cold streams
 if ho_co=='hot':
     T_co=((flow_hot*(T_hi-T_ho))/flow_cold)-T_ci
+    print ("The output temperature of the cold stream is: " + str(T_co) + "K")
 else:
     T_ho=((flow_cold*(T_ci-T_co))/flow_hot)-T_hi
+    print ("The output temperature of the hot stream is: " + str(T_ho) + "K")
 average_hot = (T_ho+T_hi)/2
 average_cold = (T_co+T_ci)/2
 
@@ -320,4 +322,5 @@ A=q/(F*U*dtlm)
 
 # Find cost
 cost = 1000 * A # USD
-print('Here is the total cost for the heat exchanger: ',cost)
+print ("The area of the heat exchanger is: " + str("{0:.2f}".format(A)) + " m^2\n")
+print ("The cost of the heat exchanger is: $" + str("{0:.2f}".format(cost)))
