@@ -6,6 +6,7 @@ Created on Wed Jun  1 01:36:04 2016
 """
 import numpy as np
 import scipy as sp
+import sys
 
 # Input Liquid Types - Returns string tuplet: (liquid_type_hot, liquid_type_cold)
 
@@ -232,7 +233,6 @@ if ho_co == 'hot':
         elif T_ho >= hot_boil:      # Makes sure that the temperature does not result in a gas
             T_ho = input("Error. This substance is a gas when it is at or above " + str(hot_boil) + "K (or " + str("{0:.2f}".format(hot_boil * 9.0/5.0)) + "R). Enter a valid temperature: ")
             valid = False
-    # Calculate 4th temperature using first two equations
     
 elif ho_co == 'cold':
     # Identify Units
