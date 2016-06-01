@@ -1,0 +1,26 @@
+import sympy as sp
+sp.init_printing()
+
+T_ci = 278
+T_hi = 360
+T_ho = 300
+flow_hot = 0.5
+flow_cold = 5.0
+T = (T_ho+T_hi)/2
+capacity_hot = 276370 - 2090.1 * T + 8.125 * (T**2) - 0.014116 * (T**3) + 0.0000093701 * (T**4)
+q = flow_hot * capacity_hot * (T_hi-T_ho)
+
+T_co = sp.Symbol("T_co")
+y = sp.Eq(q,flow_cold*(T_co-T_ci)*(276370 - 2090.1 * ((T_co+T_ci)/2) + 8.125 * (((T_co+T_ci)/2)**2) - 0.014116 * (((T_co+T_ci)/2)**3) + 0.0000093701 * (((T_co+T_ci)/2)**4)))
+y
+z = sp.solve(y,T_co)
+print(z[0].evalf())
+print(z[1].evalf())
+print(z[2].evalf())
+print(z[3].evalf())
+T_co = z[0].evalf()
+
+print (T_ci)
+print (T_hi)
+print (T_ho)
+print (T_co)
