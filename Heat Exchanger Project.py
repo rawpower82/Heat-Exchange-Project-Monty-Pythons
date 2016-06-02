@@ -1,4 +1,9 @@
-
+"""
+R. Hunter Rawson
+Kraig Farrar
+Zach Broyles
+6/1/16
+"""
 import sys
 import numpy as np
 import sympy as sp
