@@ -1,0 +1,456 @@
+import numpy as np
+import scipy as sp
+import sys
+from scipy.optimize import fsolve
+
+# Input Liquid Types - Returns string tuplet: (liquid_type_hot, liquid_type_cold)
+
+# Melting and Boiling Points - LOOK UP VALUES FOR TRIMETHYL
+melt_water = 273.15 # K
+boil_water = 373.15 # K
+melt_tetraflo = 172.00 # K
+boil_tetraflo = 247.08 # K
+melt_ethanol = 159.05 # K
+boil_ethanol = 351.44 # K
+melt_trimethyl = 165.777 # K
+boil_trimethyl = 372.388 # K
+
+# Molecular Weights
+weight_water = 18.01528 # g/mol 
+weight_tetraflo = 102.03089 # g/mol 
+weight_ethanol = 46.06844 # g/mol 
+weight_trimethyl = 114.22852 # g/mol 
+
+# Input Liquid Types 
+water = '1'
+tetraflo = '2'
+ethanol = '3'
+trimethyl = '4'
+print ("The liquid types are:")
+print ("\t1) water")
+print ("\t2) 1,1,1,2-tetrafluoroethane")
+print ("\t3) ethanol")
+print ("\t4) 2,2,4-trimethylpentane")
+print ()
+liquid_type_hot = input("What type of liquid is the hot stream? (Enter the number): ")
+while liquid_type_hot != water and liquid_type_hot != tetraflo and liquid_type_hot != ethanol and liquid_type_hot != trimethyl:
+    liquid_type_hot = input("Invalid entry. Please select an integer 1-4: ")
+liquid_type_cold = input("What type of liquid is the cold stream? (Enter the number): ")
+while liquid_type_cold != water and liquid_type_cold != tetraflo and liquid_type_cold != ethanol and liquid_type_cold != trimethyl:
+    liquid_type_cold = input("Invalid entry. Please select an integer 1-4: ")
+
+# Assign Constants to Hot Stream
+if liquid_type_hot == water:
+    hot_melt = melt_water
+    hot_boil = boil_water
+    hot_weight = weight_water
+elif liquid_type_hot == tetraflo:
+    hot_melt = melt_tetraflo
+    hot_boil = boil_tetraflo
+    hot_weight = weight_tetraflo
+elif liquid_type_hot == ethanol:
+    hot_melt = melt_ethanol
+    hot_boil = boil_ethanol
+    hot_weight = weight_ethanol
+elif liquid_type_hot == trimethyl:
+    hot_melt = melt_trimethyl
+    hot_boil = boil_trimethyl
+    hot_weight = weight_trimethyl
+
+# Assign Constants to Cold Stream
+if liquid_type_cold == water:
+    cold_melt = melt_water
+    cold_boil = boil_water
+    cold_weight = weight_water
+elif liquid_type_cold == tetraflo:
+    cold_melt = melt_tetraflo
+    cold_boil = boil_tetraflo
+    cold_weight = weight_tetraflo
+elif liquid_type_cold == ethanol:
+    cold_melt = melt_ethanol
+    cold_boil = boil_ethanol
+    cold_weight = weight_ethanol
+elif liquid_type_cold == trimethyl:
+    cold_melt = melt_trimethyl
+    cold_boil = boil_trimethyl
+    cold_weight = weight_trimethyl
+    
+
+
+
+
+U_u=input("what units would you like to enter the heat transfer coefficient in, J/s*m^2*K or Btu/s*ft^2*R? enter 'joules' or 'BTU':")
+while U_u!='joules' and U_u!='BTU':
+    U_u=input("invalid entry. please enter 'joules' or 'BTU':")
+# Input Heat Transfer Coefficient (J/(s*m^2*K))
+U = input("What is the overall heat transfer coefficient (U) of the heat exchanger (in units of J/(s*m^2*K))?: ")
+try:
+    U = float(U)
+except: 
+    print ("Error. Must enter a positive number. Goodbye.")
+    sys.exit()
+if U < 0:
+    print ("Error: Cannot have a negative heat transfer coefficient. Goodbye.")
+    sys.exit()
+    
+if U_u=='joules':
+    U=U
+elif U_u==BTU:
+    U=U*20441.96
+
+
+# Input Flow Rates
+
+# SI: kg/s 
+# AES: lb/s ???
+# 1 lb/s = 0.453592 kg/s 
+
+# Flow Rate of the Cold Stream
+# Identify Units
+kg_o_lb = input("Would you like to input the flow rate of the cold stream in kg/s or lb/s ? Enter 'kg' for kg/s or 'lb' for lb/s: ")
+while kg_o_lb != 'kg' and kg_o_lb != 'lb':
+    kg_o_lb = input("Invalid entry. Please enter 'kg' for kg/s or 'lb' for lb/s: ")
+# Input Flow Rate
+flow_cold = input("What is the flow rate of the cold stream?: ")
+valid = False
+while valid == False:       # Loop which validates input 
+    try:
+        flow_cold = float(flow_cold)    # Makes sure that a number is entered rather than a string.
+        valid = True
+    except:
+        flow_cold = input("Error. Please enter a number:")
+# Convert AES to SI
+if kg_o_lb == 'lb':
+    flow_cold = flow_cold * 0.453592
+if flow_cold < 0:        # Makes sure that the flow rate is not negative
+    print ("Error: Cannot have a negative flow rate. Goodbye.")
+    sys.exit()
+
+    
+# Flow Rate of the Hot Stream
+# Identify Units
+kg_o_lb = input("Would you like to input the flow rate of the hot stream in kg/s or lb/s ? Enter 'kg' for kg/s or 'lb' for lb/s: ")
+while kg_o_lb != 'kg' and kg_o_lb != 'lb':
+    k_o_r = input("Invalid entry. Please enter 'kg' for kg/s or 'lb' for lb/s: ")
+# Input Flow Rate
+flow_hot = input("What is the flow rate of the hot stream?: ")
+valid = False
+while valid == False:       # Loop which validates input 
+    try:
+        flow_hot = float(flow_hot)    # Makes sure that a number is entered rather than a string.
+        valid = True
+    except:
+        flow_hot = input("Error. Please enter a number:")
+# Convert AES to SI
+if kg_o_lb == 'lb':
+    flow_hot = flow_hot * 0.453592      # lb/s * (kg/s)/(lb/s) = kg/s
+if flow_hot < 0:        # Makes sure that the flow rate is not negative
+    print ("Error: Cannot have a negative flow rate. Goodbye.")
+    sys.exit()
+    
+    
+    
+    
+    
+    
+# Input Temperatures
+
+
+# Temperature of Cold Stream Input
+# Identify Units
+k_o_r = input("Would you like to input the temperature of the cold input stream in Kelvin, Rankine, or Farenheit? Enter 'K' for Kelvin or 'oR' for Rankine or 'F' for Farenheit: ")
+while k_o_r != 'K' and k_o_r != 'oR' and k_o_r !='F': 
+    k_o_r = input("Invalid entry. Please enter 'K' for Kelvin or 'oR' for Rankine: ")
+# Input Temperature
+T_ci = input("What is the input temperature of the cold stream?: ")
+valid = False
+while valid == False:       # Loop which validates input 
+    try:
+        T_ci = float(T_ci)    # Makes sure that a number is entered rather than a string.
+        valid = True
+    except:
+        T_ci = input("Error. Please enter a number:")
+    # Convert AES to SI
+    if k_o_r == 'oR':
+        T_ci = T_ci * 5.0/9.0
+    elif k_o_r=='F':
+        T_ci=(T_ci+459.67)*5/9
+    if T_ci <= cold_melt:        # Makes sure that the temperature does not result in a solid
+        T_ci = input("Error. This substance is a solid when it is at or below " + str(cold_melt) + "K (or " + str("{0:.2f}".format(cold_melt * 9.0/5.0)) + "R). Enter a valid temperature: ")
+        valid = False
+    elif T_ci >= cold_boil:      # Makes sure that the temperature does not result in a gas
+        T_ci = input("Error. This substance is a gas when it is at or above " + str(cold_boil) + "K (or " + str("{0:.2f}".format(cold_boil * 9.0/5.0)) + "R). Enter a valid temperature: ")
+        valid = False
+
+        
+# Temperature of Hot Stream Input
+# Identify Units
+k_o_r = input("Would you like to input the temperature of the hot input stream in Kelvin or Rankine? Enter 'K' for Kelvin or 'oR' for Rankine or 'F' for farenheit: ")
+while k_o_r != 'K' and k_o_r != 'oR' and k_o_r !='F':
+    k_o_r = input("Invalid entry. Please enter 'K' for Kelvin or 'oR' for Rankine: ")
+# Input Temperature
+T_hi = input("What is the input temperature of the hot stream?: ")
+valid = False
+while valid == False:     # Loop which makes sure that a number is entered. 
+    try:
+        T_hi = float(T_hi)
+        valid = True
+    except:
+        T_hi = input("Error. Please enter a number:")
+    # Convert AES to SI
+    if k_o_r == 'oR':
+        T_hi = T_hi * 5.0/9.0
+    elif k_o_r=='F':
+        T_hi=(T_hi+459.67)*5/9
+    if T_hi <= hot_melt:        # Makes sure that the temperature does not result in a solid
+        T_hi = input("Error. This substance is a solid when it is at or below " + str(hot_melt) + "K (or " + str("{0:.2f}".format(hot_melt * 9.0/5.0)) + "R). Enter a valid temperature: ")
+        valid = False
+    elif T_hi >= hot_boil:      # Makes sure that the temperature does not result in a gas
+        T_hi = input("Error. This substance is a gas when it is at or above " + str(hot_boil) + "K (or " + str("{0:.2f}".format(hot_boil * 9.0/5.0)) + "R). Enter a valid temperature: ")
+        valid = False
+        
+        
+# Temperature of One Output
+ho_co = input("Would you like to enter the output temperature of the hot or cold stream? Enter 'hot' or 'cold': ")
+while ho_co != 'hot' and ho_co != 'cold':
+    ho_co = input("Invalid entry. Please enter 'hot' or 'cold': ")
+if ho_co == 'hot':
+    # Identify Units
+    k_o_r = input("Would you like to input the temperature of the hot input stream in Kelvin or Rankine? Enter 'K' for Kelvin or 'oR' for Rankine or 'F' for farenheit: ")
+    while k_o_r != 'K' and k_o_r != 'oR' and k_o_r !='F':
+        k_o_r = input("Invalid entry. Please enter 'K' for Kelvin or 'oR' for Rankine: ")
+    # Input Temperature
+    T_ho = input("What is the output temperature of the hot stream?: ")
+    valid = False
+    while valid == False:       # Loop which makes sure that a number is entered. 
+        try:
+            T_ho = float(T_ho)
+            valid = True
+        except:
+            T_ho = input("Error. Please enter a number:")
+        # Convert AES to SI
+        if k_o_r == 'oR':
+            T_ho = T_ho * 5.0/9.0
+        elif k_o_r=='F':
+            T_ho=(T_ho+459.67)*5/9
+        if T_ho <= hot_melt:        # Makes sure that the temperature does not result in a solid
+            T_ho = input("Error. This substance is a solid when it is at or below " + str(hot_melt) + "K (or " + str("{0:.2f}".format(hot_melt * 9.0/5.0)) + "R). Enter a valid temperature: ")
+            valid = False
+        elif T_ho >= hot_boil:      # Makes sure that the temperature does not result in a gas
+            T_ho = input("Error. This substance is a gas when it is at or above " + str(hot_boil) + "K (or " + str("{0:.2f}".format(hot_boil * 9.0/5.0)) + "R). Enter a valid temperature: ")
+            valid = False
+    
+elif ho_co == 'cold':
+    # Identify Units
+    k_o_r = input("Would you like to input the temperature of the hot input stream in Kelvin or Rankine? Enter 'K' for Kelvin or 'oR' for Rankine or 'F' for farenheit: ")
+    while k_o_r != 'K' and k_o_r != 'oR' and k_o_r !='F':
+        k_o_r = input("Invalid entry. Please enter 'K' for Kelvin or 'oR' for Rankine: ")
+    # Input Temperature
+    T_co = input("What is the output temperature of the cold stream?: ")
+    valid = False
+    while valid == False:       # Loop which makes sure that a number is entered. 
+        try:
+            T_co = float(T_co)
+            valid = True
+        except:
+            T_co = input("Error. Please enter a number:")
+        # Convert AES to SI
+        if k_o_r == 'oR':
+            T_co = T_co * 5.0/9.0
+        elif k_o_r=='F':
+            T_ho=(T_ho+459.67)*5/9
+        #if T_co <= cold_melt:        # Makes sure that the temperature does not result in a solid
+       #     T_co = input("Error. This substance is a solid when it is at or below " + str(cold_melt) + "K (or " + str("{0:.2f}".format(cold_melt * 9.0/5.0)) + "R). Enter a valid temperature: ")
+       #     valid = False
+       # elif T_co >= cold_boil:      # Makes sure that the temperature does not result in a gas
+       #     T_co = input("Error. This substance is a gas when it is at or above " + str(cold_boil) + "K (or " + str("{0:.2f}".format(cold_boil * 9.0/5.0)) + "R). Enter a valid temperature: ")
+       #     valid = False
+# Define 4th temperature and average temperatures for hot and cold streams
+#if ho_co=='hot':
+#    T_co=((flow_hot*(T_hi-T_ho))/flow_cold)-T_ci
+#    print ("The output temperature of the cold stream is: " + str(T_co) + "K")
+#else:
+ #   T_ho=((flow_cold*(T_ci-T_co))/flow_hot)-T_hi
+  #  print ("The output temperature of the hot stream is: " + str(T_ho) + "K")
+
+
+
+
+# Define Specific Heat Capacities (Use average of inlet and outlet temperature)
+if ho_co=='hot':
+    average_hot = (T_ho+T_hi)/2
+    capacity_waterh = 276370 - 2090.1 * (average_hot) + 8.125 * (average_hot**2) - 0.014116 * (average_hot**3) + 0.0000093701 * (average_hot**4)
+    capacity_tetrah = 651080 - 9505.7 * (average_hot) + 62.835 * (average_hot**2) - 0.18264 * (average_hot**3) + 0.00020031 * (average_hot**4)
+    capacity_ethanolh = 102640 - 139.63 * average_hot - .030341 * average_hot**2 + .0020386 * average_hot**3 + 0.0 * average_hot**4
+    capacity_trimethh = 95300 - 696.70 * average_hot - 1.3765 * average_hot**2 + .0021734 * average_hot**3 + 0.0 * average_hot**4
+else:
+    average_cold = (T_co+T_ci)/2
+    capacity_waterc = 276370 - 2090.1 * (average_cold) + 8.125 * (average_cold**2) - 0.014116 * (average_cold**3) + 0.0000093701 * (average_cold**4)
+    capacity_tetrac = 651080 - 9505.7 * (average_cold) + 62.835 * (average_cold**2) - 0.18264 * (average_cold**3) + 0.00020031 * (average_cold**4)
+    capacity_ethanolc = 102640 - 139.63 * average_cold - .030341 * average_cold**2 + .0020386 * average_cold**3 + 0.0 * average_cold**4
+    capacity_trimethc = 95300 - 696.70 * average_cold - 1.3765 * average_cold**2 + .0021734 * average_cold**3 + 0.0 * average_cold**4
+
+
+# Define Temperature Log Mean and delta T 1 & 2
+
+
+# Find q
+#if ho_co=='hot':
+ #   if liquid_type_hot == water:
+  #      q=flow_hot*capacity_waterh*(T_hi-T_ho)
+        
+   # elif liquid_type_hot == tetraflo:
+    #    q=flow_hot*capacity_tetrah*(T_hi-T_ho)
+       
+    #elif liquid_type_hot == ethanol:
+     #   q=flow_hot*capacity_ethanolh*(T_hi-T_ho)
+        
+    #elif liquid_type_hot == trimethyl:
+     #   q=flow_hot*capacity_trimethh*(T_hi-T_ho)
+        
+    
+#else:
+ #   if liquid_type_cold == water:
+  #      q=flow_cold*capacity_waterc*(T_ci-T_co)
+        
+   # elif liquid_type_cold == tetraflo:
+    #    q=flow_cold*capacity_tetrac*(T_ci-T_co)
+        
+#    elif liquid_type_cold == ethanol:        
+ #       q=flow_cold*capacity_ethanolc*(T_ci-T_co)
+        
+  #  elif liquid_type_cold == trimethyl:
+   #     q=flow_cold*capacity_trimethc*(T_ci-T_co)
+
+#if liquid_type_cold==water:
+#    capacity_cold=capacity_waterc
+#elif liquid_type_cold==tetraflo:
+ #   capacity_cold=capacity_tetrac
+#elif liquid_type_cold == ethanol:
+ #   capacity_cold=capacity_ethanolc
+#elif liquid_type_cold == trimethyl:
+ #   capacity_cold=capacity_trimethc
+
+#if liquid_type_hot==water:
+ #   capacity_hot=capacity_waterh
+#elif liquid_type_hot==tetraflo:
+ #   capacity_hot=capacity_tetrah
+#elif liquid_type_hot == ethanol:
+ #   capacity_hot=capacity_ethanolh
+#elif liquid_type_hot == trimethyl:
+ #   capacity_cold=capacity_trimethh
+#solve simultaneously for c and Tout
+if ho_co=='hot':
+    
+    def f1(z):
+        T_co=z
+        
+        average_hot = (T_ho+T_hi)/2
+        average_cold = (T_co+T_ci)/2
+        capacity_waterh = 276370 - 2090.1 * (average_hot) + 8.125 * (average_hot**2) - 0.014116 * (average_hot**3) + 0.0000093701 * (average_hot**4)
+        capacity_tetrah = 651080 - 9505.7 * (average_hot) + 62.835 * (average_hot**2) - 0.18264 * (average_hot**3) + 0.00020031 * (average_hot**4)
+        capacity_ethanolh = 102640 - 139.63 * average_hot - .030341 * average_hot**2 + .0020386 * average_hot**3 + 0.0 * average_hot**4
+        capacity_trimethh = 95300 - 696.70 * average_hot - 1.3765 * average_hot**2 + .0021734 * average_hot**3 + 0.0 * average_hot**4
+    
+        capacity_waterc = 276370 - 2090.1 * (average_cold) + 8.125 * (average_cold**2) - 0.014116 * (average_cold**3) + 0.0000093701 * (average_cold**4)
+        capacity_tetrac = 651080 - 9505.7 * (average_cold) + 62.835 * (average_cold**2) - 0.18264 * (average_cold**3) + 0.00020031 * (average_cold**4)
+        capacity_ethanolc = 102640 - 139.63 * average_cold - .030341 * average_cold**2 + .0020386 * average_cold**3 + 0.0 * average_cold**4
+        capacity_trimethc = 95300 - 696.70 * average_cold - 1.3765 * average_cold**2 + .0021734 * average_cold**3 + 0.0 * average_cold**4
+        
+        if liquid_type_cold==water:
+            capacity_cold=capacity_waterc
+        elif liquid_type_cold==tetraflo:
+            capacity_cold=capacity_tetrac
+        elif liquid_type_cold == ethanol:
+            capacity_cold=capacity_ethanolc
+        elif liquid_type_cold == trimethyl:
+            capacity_cold=capacity_trimethc
+        
+        if liquid_type_hot==water:
+            capacity_hot=capacity_waterh
+        elif liquid_type_hot==tetraflo:
+            capacity_hot=capacity_tetrah
+        elif liquid_type_hot == ethanol:
+            capacity_hot=capacity_ethanolh
+        elif liquid_type_hot == trimethyl:
+            capacity_cold=capacity_trimethh
+        
+        
+        q=np.zeros(2)
+        q[0]=flow_hot*capacity_hot*(T_hi-T_ho)
+        q[1]=flow_cold*capacity_cold*(T_co-T_ci)    
+        return q[1]-q[0]
+    z=fsolve(f1,1000)
+    T_co=z
+    print( "the cold output temperature is "+T_co+" K")
+elif ho_co=='cold':
+    
+    def f1(z):
+        T_ho=z
+        average_hot = (T_ho+T_hi)/2
+        average_cold = (T_co+T_ci)/2
+        capacity_waterh = 276370 - 2090.1 * (average_hot) + 8.125 * (average_hot**2) - 0.014116 * (average_hot**3) + 0.0000093701 * (average_hot**4)
+        capacity_tetrah = 651080 - 9505.7 * (average_hot) + 62.835 * (average_hot**2) - 0.18264 * (average_hot**3) + 0.00020031 * (average_hot**4)
+        capacity_ethanolh = 102640 - 139.63 * average_hot - .030341 * average_hot**2 + .0020386 * average_hot**3 + 0.0 * average_hot**4
+        capacity_trimethh = 95300 - 696.70 * average_hot - 1.3765 * average_hot**2 + .0021734 * average_hot**3 + 0.0 * average_hot**4
+    
+        capacity_waterc = 276370 - 2090.1 * (average_cold) + 8.125 * (average_cold**2) - 0.014116 * (average_cold**3) + 0.0000093701 * (average_cold**4)
+        capacity_tetrac = 651080 - 9505.7 * (average_cold) + 62.835 * (average_cold**2) - 0.18264 * (average_cold**3) + 0.00020031 * (average_cold**4)
+        capacity_ethanolc = 102640 - 139.63 * average_cold - .030341 * average_cold**2 + .0020386 * average_cold**3 + 0.0 * average_cold**4
+        capacity_trimethc = 95300 - 696.70 * average_cold - 1.3765 * average_cold**2 + .0021734 * average_cold**3 + 0.0 * average_cold**4
+        
+        if liquid_type_cold==water:
+            capacity_cold=capacity_waterc
+        elif liquid_type_cold==tetraflo:
+            capacity_cold=capacity_tetrac
+        elif liquid_type_cold == ethanol:
+            capacity_cold=capacity_ethanolc
+        elif liquid_type_cold == trimethyl:
+            capacity_cold=capacity_trimethc
+        
+        if liquid_type_hot==water:
+            capacity_hot=capacity_waterh
+        elif liquid_type_hot==tetraflo:
+            capacity_hot=capacity_tetrah
+        elif liquid_type_hot == ethanol:
+            capacity_hot=capacity_ethanolh
+        elif liquid_type_hot == trimethyl:
+            capacity_cold=capacity_trimethh
+            
+       
+        
+        q=np.zeros(2)
+        q[0]=flow_hot*capacity_hot*(T_hi-T_ho)
+        q[1]=flow_cold*capacity_cold*(T_co-T_ci)    
+        return q[1]-q[0]
+    z=fsolve(f1,400)
+    T_ho=z
+    print("the temperature of the hot output is "+T_ho+" K")
+# Define R, P, and F 
+capacity_waterh = 276370 - 2090.1 * (average_hot) + 8.125 * (average_hot**2) - 0.014116 * (average_hot**3) + 0.0000093701 * (average_hot**4)
+capacity_tetrah = 651080 - 9505.7 * (average_hot) + 62.835 * (average_hot**2) - 0.18264 * (average_hot**3) + 0.00020031 * (average_hot**4)
+capacity_ethanolh = 102640 - 139.63 * average_hot - .030341 * average_hot**2 + .0020386 * average_hot**3 + 0.0 * average_hot**4
+capacity_trimethh = 95300 - 696.70 * average_hot - 1.3765 * average_hot**2 + .0021734 * average_hot**3 + 0.0 * average_hot**4
+if liquid_type_hot==water:
+    capacity_hot=capacity_waterh
+elif liquid_type_hot==tetraflo:
+    capacity_hot=capacity_tetrah
+elif liquid_type_hot == ethanol:
+    capacity_hot=capacity_ethanolh
+elif liquid_type_hot == trimethyl:
+    capacity_cold=capacity_trimethh
+q=flow_hot*capacity_hot*(T_hi-T_ho)       
+R=(T_hi-T_ho)/(T_co-T_ci)
+P=(T_co-T_ci)/(T_hi-T_ci)
+F=(((R**2+1)**(1/2))/(R-1))*(sp.log((1-P)/(1-P*R))/sp.log((2-P*(R+1-(R**2+1)**.5))/(2-P*(R+1+(R**2+1)**.5))))
+dt1= abs(T_hi-T_co)
+dt2= abs(T_ho-T_ci)
+dtlm=(dt2-dt1)/np.log(dt2/dt1)
+# Find surface area
+A=q/(F*U*dtlm)
+
+# Find cost
+cost = 1000 * A # USD
+
+print ("The area of the heat exchanger is: " + A + " m^2\n")
+print ("The cost of the heat exchanger is: $" + cost)
