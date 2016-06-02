@@ -1,3 +1,4 @@
+
 import sys
 import numpy as np
 import sympy as sp
@@ -113,7 +114,7 @@ if U < 0:
 # Convert AES to SI    
 if U_u=='joules' or U_u == "Joules":
     U=U
-elif U_u==BTU:
+elif U_u== 'BTU':
     U=U*20441.96
 
     
@@ -189,17 +190,18 @@ while valid == False:       # Loop which validates input
     try:
         T_ci = float(T_ci)    # Makes sure that a number is entered rather than a string.
         valid = True
+         # Convert AES to SI
+        if k_o_f == 'F':
+            T_ci = (T_ci+459.67) * 5.0/9.0
+        if T_ci <= cold_melt:        # Makes sure that the temperature does not result in a solid
+            T_ci = input("Error. This substance is a solid when it is at or below " + str(cold_melt) + "K (or " + str("{0:.2f}".format((cold_melt* 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
+            valid = False
+        elif T_ci >= cold_boil:      # Makes sure that the temperature does not result in a gas
+            T_ci = input("Error. This substance is a gas when it is at or above " + str(cold_boil) + "K (or " + str("{0:.2f}".format((cold_boil* 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
+            valid = False
     except:
         T_ci = input("Error. Please enter a number:")
-    # Convert AES to SI
-    if k_o_f == 'F':
-        T_ci = (T_ci+459.67) * 5.0/9.0
-    if T_ci <= cold_melt:        # Makes sure that the temperature does not result in a solid
-        T_ci = input("Error. This substance is a solid when it is at or below " + str(cold_melt) + "K (or " + str("{0:.2f}".format((cold_melt* 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
-        valid = False
-    elif T_ci >= cold_boil:      # Makes sure that the temperature does not result in a gas
-        T_ci = input("Error. This substance is a gas when it is at or above " + str(cold_boil) + "K (or " + str("{0:.2f}".format((cold_boil* 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
-        valid = False
+   
 
         
 # Temperature of Hot Stream Input
@@ -214,17 +216,18 @@ while valid == False:     # Loop which makes sure that a number is entered.
     try:
         T_hi = float(T_hi)
         valid = True
+        # Convert AES to SI
+        if k_o_f == 'F':
+            T_hi = (T_hi+459.67) * 5.0/9.0
+        if T_hi <= hot_melt:        # Makes sure that the temperature does not result in a solid
+            T_hi = input("Error. This substance is a solid when it is at or below " + str(hot_melt) + "K (or " + str("{0:.2f}".format((hot_melt* 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
+            valid = False
+        elif T_hi >= hot_boil:      # Makes sure that the temperature does not result in a gas
+            T_hi = input("Error. This substance is a gas when it is at or above " + str(hot_boil) + "K (or " + str("{0:.2f}".format((hot_boil* 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
+            valid = False
     except:
         T_hi = input("Error. Please enter a number:")
-    # Convert AES to SI
-    if k_o_f == 'F':
-        T_hi = (T_hi+459.67) * 5.0/9.0
-    if T_hi <= hot_melt:        # Makes sure that the temperature does not result in a solid
-        T_hi = input("Error. This substance is a solid when it is at or below " + str(hot_melt) + "K (or " + str("{0:.2f}".format((hot_melt* 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
-        valid = False
-    elif T_hi >= hot_boil:      # Makes sure that the temperature does not result in a gas
-        T_hi = input("Error. This substance is a gas when it is at or above " + str(hot_boil) + "K (or " + str("{0:.2f}".format((hot_boil* 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
-        valid = False
+    
         
         
 # Temperature of One Output
@@ -243,17 +246,18 @@ if ho_co == 'hot':
         try:
             T_ho = float(T_ho)
             valid = True
+            # Convert AES to SI
+            if k_o_f == 'F':
+                T_ho = (float(T_ho)+459.67) * 5.0/9.0
+            if T_ho <= hot_melt:        # Makes sure that the temperature does not result in a solid
+                T_ho = input("Error. This substance is a solid when it is at or below " + str(hot_melt) + "K (or " + str("{0:.2f}".format((hot_melt* 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
+                valid = False
+            elif T_ho >= hot_boil:      # Makes sure that the temperature does not result in a gas
+                T_ho = input("Error. This substance is a gas when it is at or above " + str(hot_boil) + "K (or " + str("{0:.2f}".format((hot_boil * 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
+                valid = False
         except:
             T_ho = input("Error. Please enter a number:")
-        # Convert AES to SI
-        if k_o_f == 'F':
-            T_ho = (T_ho+459.67) * 5.0/9.0
-        if T_ho <= hot_melt:        # Makes sure that the temperature does not result in a solid
-            T_ho = input("Error. This substance is a solid when it is at or below " + str(hot_melt) + "K (or " + str("{0:.2f}".format((hot_melt* 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
-            valid = False
-        elif T_ho >= hot_boil:      # Makes sure that the temperature does not result in a gas
-            T_ho = input("Error. This substance is a gas when it is at or above " + str(hot_boil) + "K (or " + str("{0:.2f}".format((hot_boil * 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
-            valid = False
+        
     # Calculate 4th temperature using first two equations
     averageT_hot = (T_hi+T_ho)/2
     capacity_hot = define_capacity(averageT_hot, liquid_type_hot)
@@ -289,17 +293,18 @@ elif ho_co == 'cold':
         try:
             T_co = float(T_co)
             valid = True
+            # Convert AES to SI
+            if k_o_f == 'F':
+                T_co = (float(T_co)+459.67) * 5.0/9.0
+            if T_co <= cold_melt:        # Makes sure that the temperature does not result in a solid
+                T_co = input("Error. This substance is a solid when it is at or below " + str(cold_melt) + "K (or " + str("{0:.2f}".format((cold_melt * 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
+                valid = False
+            elif T_co >= cold_boil:      # Makes sure that the temperature does not result in a gas
+                T_co = input("Error. This substance is a gas when it is at or above " + str(cold_boil) + "K (or " + str("{0:.2f}".format((cold_boil * 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
+                valid = False
         except:
             T_co = input("Error. Please enter a number:")
-        # Convert AES to SI
-        if k_o_r == 'F':
-            T_co = (T_co+459.67) * 5.0/9.0
-        if T_co <= cold_melt:        # Makes sure that the temperature does not result in a solid
-            T_co = input("Error. This substance is a solid when it is at or below " + str(cold_melt) + "K (or " + str("{0:.2f}".format((cold_melt * 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
-            valid = False
-        elif T_co >= cold_boil:      # Makes sure that the temperature does not result in a gas
-            T_co = input("Error. This substance is a gas when it is at or above " + str(cold_boil) + "K (or " + str("{0:.2f}".format((cold_boil * 9.0/5.0)-459.67)) + "F). Enter a valid temperature: ")
-            valid = False
+        
     # Calculate 4th temperature using first two equations
     averageT_cold = (T_ci+T_co)/2
     capacity_cold = define_capacity(averageT_cold, liquid_type_cold)
@@ -336,10 +341,12 @@ P=(T_co-T_ci)/(T_hi-T_ci)
 F=(((R**2+1)**(1/2))/(R-1))*(sp.log((1-P)/(1-P*R))/sp.log((2-P*(R+1-(R**2+1)**.5))/(2-P*(R+1+(R**2+1)**.5))))
 
 # Find surface area
+averageT_hot = (T_hi+T_ho)/2
+capacity_hot = define_capacity(averageT_hot, liquid_type_hot)
 q = flow_hot*capacity_hot*(T_hi-T_ho)/hot_weight
 A=q/(F*U*dtlm) # m^2
 
 # Find cost
 cost = 1000 * A # USD
-print (\n"The area of the heat exchanger is: " + str("{0:.2f}".format(A)) + " m^2\n")
+print ("\nThe area of the heat exchanger is: " + str("{0:.2f}".format(A)) + " m^2\n")
 print ("The cost of the heat exchanger is: $" + str("{0:.2f}".format(cost)))
