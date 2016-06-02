@@ -341,5 +341,5 @@ A=q/(F*U*dtlm) # m^2
 
 # Find cost
 cost = 1000 * A # USD
-print ("The area of the heat exchanger is: " + str("{0:.2f}".format(A)) + " m^2\n")
+print (\n"The area of the heat exchanger is: " + str("{0:.2f}".format(A)) + " m^2\n")
 print ("The cost of the heat exchanger is: $" + str("{0:.2f}".format(cost)))
