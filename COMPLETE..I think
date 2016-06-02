@@ -21,7 +21,7 @@ def define_capacity(average, liquid_type):  # Parameters: Either average_hot or 
         return capacity_trimethyl
 
 
-# Melting and Boiling Points - LOOK UP VALUES FOR TRIMETHYL
+# Melting and Boiling Points 
 melt_water = 273.15 # K
 boil_water = 373.15 # K
 melt_tetraflo = 172.00 # K
